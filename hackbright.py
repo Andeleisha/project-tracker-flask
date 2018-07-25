@@ -58,6 +58,26 @@ def make_new_student(first_name, last_name, github):
     print(f"Successfully added student: {first_name} {last_name}")
 
 
+def make_new_project(title, description, max_grade):
+    """Add a new project to the database.
+
+    Given a title, description, and max grade, add a project to the
+    database and print a confirmation message.
+    """
+
+    QUERY = """
+        INSERT INTO projects (title, description, max_grade)
+          VALUES (:title, :description, :max_grade)
+        """
+
+    db.session.execute(QUERY, {'title': title,
+                               'description': description,
+                               'max_grade': max_grade})
+    db.session.commit()
+
+    print(f"Successfully added project: {title} {description} {max_grade}")
+
+
 
 def get_project_by_title(title):
     """Given a project title, print information about the project."""
@@ -147,6 +167,50 @@ def get_grades_by_title(title):
 
     for row in rows:
         print(f"Student {row[0]} received grade of {row[1]} for {title}")
+
+    return rows
+
+
+def get_grades_and_names_by_title(title):
+    """Get a list of all student grades and their names for a project by title"""
+    QUERY = """
+        SELECT grades.student_github, students.first_name, students.last_name, grades.grade
+        FROM grades
+        JOIN students ON (students.github=grades.student_github)
+        WHERE project_title = :title
+        """
+
+    db_cursor = db.session.execute(QUERY, {'title': title})
+
+    rows = db_cursor.fetchall()
+
+    return rows
+
+def get_all_students():
+    """Get a list of all students in the DB"""
+
+    QUERY = """
+        SELECT *
+        FROM students
+        """
+
+    db_cursor = db.session.execute(QUERY)
+
+    rows = db_cursor.fetchall()
+
+    return rows
+
+def get_all_projects():
+    """Get a list of all projects"""
+
+    QUERY = """
+        SELECT *
+        FROM projects
+        """
+
+    db_cursor = db.session.execute(QUERY)
+
+    rows = db_cursor.fetchall()
 
     return rows
 

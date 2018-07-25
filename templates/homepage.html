@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %} Homepage
+{% endblock %}
+{% block content %}
+
+<h1>Welcome Hackwarts!</h1>
+
+<h2>Here are our students:</h2>
+
+<ul>
+	{% for student in students %}
+	<li> <a href="/student?github={{ student[3] }}">{{ student[1] }} {{ student[2] }}</a></li>
+	{% endfor %}
+</ul>
+
+<h2>Here are our projects:</h2>
+
+<ul>
+	{% for project in projects %}
+	<li> <a href="/project?project={{ project[1] }}">{{ project[1] }}</a></li>
+	{% endfor %}
+</ul>
+
+
+{% endblock %}

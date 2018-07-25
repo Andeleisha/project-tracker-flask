@@ -4,5 +4,14 @@
 {% block content %}
 
 The {{ project_name }} project is {{ project_des }} and is worth a maximum of {{ points }} points.
+<br>
+<br>
+Here is a list of students who have completed the {{ project_name }} assignment:
+<ul>
+	{% for grade in grades %}
+		<li> Student: <a href="/student?github={{ grade[0] }}">{{ grade[1] }} {{ grade[2] }}</a> Grade: {{ grade[3] }}</li>
+	
+
+{% endfor %}
 
 {% endblock %}
